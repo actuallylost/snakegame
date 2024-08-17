@@ -1,0 +1,98 @@
+[gd_scene load_steps=15 format=3 uid="uid://cubl15xjojaks"]
+
+[ext_resource type="Texture2D" uid="uid://oyqqpfp6uaxe" path="res://assets/sprites/tileset.png" id="1_1rwf2"]
+[ext_resource type="Script" path="res://scenes/snake/snake.gd" id="2_u5l5t"]
+[ext_resource type="Texture2D" uid="uid://c3xyx05mocuq" path="res://icon.png" id="2_wsvtb"]
+[ext_resource type="Texture2D" uid="uid://730cvv4jaxkd" path="res://assets/sprites/snake_tail.png" id="3_m82x8"]
+[ext_resource type="FontFile" uid="uid://pvvqx3pq6u7j" path="res://assets/fonts/PixelOperator8.ttf" id="5_yaxnk"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lobeu"]
+texture = ExtResource("1_1rwf2")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a3ces"]
+texture = ExtResource("2_wsvtb")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8sebx"]
+texture = ExtResource("3_m82x8")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_if3jw"]
+tile_size = Vector2i(8, 8)
+sources/0 = SubResource("TileSetAtlasSource_lobeu")
+sources/1 = SubResource("TileSetAtlasSource_a3ces")
+sources/2 = SubResource("TileSetAtlasSource_8sebx")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_klc3x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4cgk7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bntl8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f7pcg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kuhaw"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Camera" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(3, 3)
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_if3jw")
+format = 2
+layer_0/name = "background"
+layer_0/z_index = -1
+layer_1/name = "snek"
+layer_1/tile_data = PackedInt32Array()
+script = ExtResource("2_u5l5t")
+wait_time = 0.1
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="BoxContainer" type="VBoxContainer" parent="."]
+offset_right = 384.0
+offset_bottom = 216.0
+
+[node name="ScoreLabel" type="Label" parent="BoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.698039)
+theme_override_fonts/font = ExtResource("5_yaxnk")
+theme_override_font_sizes/font_size = 16
+text = "SCORE: 0"
+
+[node name="GameOverLabel" type="Label" parent="BoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_yaxnk")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RetryButton" type="Button" parent="BoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_pressed_color = Color(0.47, 0.47, 0.47, 1)
+theme_override_colors/font_hover_color = Color(0.71, 0.71, 0.71, 1)
+theme_override_fonts/font = ExtResource("5_yaxnk")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_klc3x")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_4cgk7")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_bntl8")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_f7pcg")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kuhaw")
+text = "RETRY"
+
+[connection signal="timeout" from="Timer" to="TileMap" method="_on_timer_timeout"]
+[connection signal="pressed" from="BoxContainer/RetryButton" to="TileMap" method="_on_retry_button_pressed"]
